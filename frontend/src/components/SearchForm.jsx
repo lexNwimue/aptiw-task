@@ -2,7 +2,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
-const Form = () => {
+const SearchForm = () => {
   return (
     <>
       <Box
@@ -39,4 +39,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default SearchForm;

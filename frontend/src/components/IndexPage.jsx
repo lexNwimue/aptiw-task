@@ -1,12 +1,12 @@
 // import SignedInNavbar from "./SignedInNavbar";
-import Form from "./Form";
+import SearchForm from "./SearchForm";
 import Navbar from "./Navbar";
 
 const IndexPage = () => {
   return (
     <>
       <Navbar />;
-      <Form />
+      <SearchForm />
     </>
   );
 };

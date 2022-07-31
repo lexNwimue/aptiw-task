@@ -68,10 +68,35 @@ const Signup = () => {
           />
         </Box>
         <Box>
-          <LockIcon sx={{ color: "action.active", mt: 3 }} />
+          <LockIcon sx={{ color: "action.active", mt: 4 }} />
           <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
             <InputLabel htmlFor="standard-adornment-password">
               Password
+            </InputLabel>
+            <Input
+              id="standard-adornment-password"
+              type={values.showPassword ? "text" : "password"}
+              value={values.password}
+              onChange={handleChange("password")}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        </Box>
+        <Box>
+          <LockIcon sx={{ color: "action.active", mt: 4 }} />
+          <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
+            <InputLabel htmlFor="standard-adornment-password">
+              Confirm Password
             </InputLabel>
             <Input
               id="standard-adornment-password"

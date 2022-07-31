@@ -1,12 +1,12 @@
 // import SignedInNavbar from "./SignedInNavbar";
-import Form from "./Form";
+import SearchForm from "./SearchForm";
 import SignedInNavbar from "./Navbar";
 
 const Dashboard = () => {
   return (
     <>
       <SignedInNavbar />;
-      <Form />
+      <SearchForm />
     </>
   );
 };
