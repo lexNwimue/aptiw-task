@@ -24,9 +24,11 @@ const Navbar = () => {
             justifyContent: "space-around",
           }}
         >
-          <Typography variant="h4" sx={{}}>
-            Dictionary
-          </Typography>
+          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+            <Typography variant="h4" sx={{}}>
+              Dictionary
+            </Typography>
+          </Link>
           <Button
             sx={{
               pb: "0px",
