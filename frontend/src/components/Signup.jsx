@@ -14,14 +14,69 @@ import Visibility from "@mui/icons-material/Visibility";
 import InputAdornment from "@mui/material/InputAdornment";
 import LockIcon from "@mui/icons-material/Lock";
 
+// Utils import
+import signupUtil from "../utils/signupUtil";
+
 const Signup = () => {
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password1, setPassword1] = useState("");
+  // const [password2, setPassword2] = useState("");
+  const [nameErr, setNameErr] = useState("");
+  const [emailErr, setEmailErr] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
+
   const [values, setValues] = useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
+    name: "",
+    email: "",
+    password1: "",
+    password2: "",
     showPassword: false,
   });
+
+  // const handleChange = (prop) => (event) => {
+  const handleChange = (prop) => (event) => {
+    console.log(event);
+    setValues({ ...values, [event.target.name]: event.target.value });
+    console.log(values.name, values.email, values.password1, values.password2);
+  };
+
+  const handleRegister = async () => {
+    const validate = signupUtil(
+      values.name,
+      values.email,
+      values.password1,
+      values.password2
+    );
+    // console.log(validate);
+    if (!validate.success) {
+      if (validate.nameErr) setNameErr(validate.nameErr);
+      if (validate.emailErr) setEmailErr(validate.emailErr);
+      if (validate.passwordErr) setPasswordErr(validate.passwordErr);
+    }
+
+    if (validate.success) {
+      const body = {
+        name: values.name,
+        email: values.email,
+        password: values.password1,
+      };
+      const response = await fetch("/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      const data = await response.json();
+      if (data.failed) {
+        // set errors here
+      }
+      if (data.success) {
+        // Navigate to dashboard here
+      }
+    }
+  };
 
   const handleClickShowPassword = () => {
     setValues({
@@ -32,10 +87,6 @@ const Signup = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
-  };
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
   };
 
   return (
@@ -52,32 +103,46 @@ const Signup = () => {
         <Box>
           <AccountCircle sx={{ color: "action.active", mr: 1, mt: 3 }} />
           <TextField
-            id="input-with-sx"
             label="Full Name"
+            value={values.name}
+            required
             variant="standard"
             sx={{ width: "30%" }}
+            name="name"
+            onChange={(e) =>
+              setValues({ ...values, [e.target.name]: e.target.value })
+            }
           />
         </Box>
         <Box>
           <AlternateEmail sx={{ color: "action.active", mr: 1, mt: 3 }} />
           <TextField
-            id="input-with-sx"
             label="Email"
+            required
             variant="standard"
+            value={values.email}
+            onChange={(e) =>
+              setValues({ ...values, [e.target.name]: e.target.value })
+            }
+            name="email"
             sx={{ width: "30%" }}
           />
         </Box>
         <Box>
           <LockIcon sx={{ color: "action.active", mt: 4 }} />
           <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-password">
+            <InputLabel htmlFor="standard-adornment-password1">
               Password
             </InputLabel>
             <Input
-              id="standard-adornment-password"
+              id="standard-adornment-password1"
+              required
               type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              onChange={handleChange("password")}
+              value={values.password1}
+              name="password1"
+              onChange={(e) =>
+                setValues({ ...values, [e.target.name]: e.target.value })
+              }
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -95,14 +160,18 @@ const Signup = () => {
         <Box>
           <LockIcon sx={{ color: "action.active", mt: 4 }} />
           <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-password">
+            <InputLabel htmlFor="standard-adornment-password2">
               Confirm Password
             </InputLabel>
             <Input
-              id="standard-adornment-password"
+              id="standard-adornment-password2"
+              required
               type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              onChange={handleChange("password")}
+              value={values.password2}
+              name="password2"
+              onChange={(e) =>
+                setValues({ ...values, [e.target.name]: e.target.value })
+              }
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -118,10 +187,15 @@ const Signup = () => {
           </FormControl>
         </Box>
         <Box>
-          <Button variant="contained" sx={{ width: "100px" }}>
+          <Button
+            variant="contained"
+            sx={{ width: "100px" }}
+            onClick={handleRegister}
+          >
             Register
           </Button>
         </Box>
+        <span>I am a span</span>
       </Box>
     </>
   );

@@ -1,8 +1,14 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { useState } from "react";
 
 const SearchForm = () => {
+  const [text, setText] = useState("");
+  const handleInput = (e) => {
+    setText(e.target.value);
+    console.log(text);
+  };
   return (
     <>
       <Box
@@ -18,6 +24,7 @@ const SearchForm = () => {
           type="search"
           variant="standard"
           sx={{ width: "400px" }}
+          onChange={(e) => handleInput(e)}
         />
         <Button
           variant="filled"

@@ -2,14 +2,14 @@ import { User } from "./model/User.mjs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-// const validate = (name, email, password1, password2) => {
+// const validate = (name, email, password, password2) => {
 //     if(name.match(/[0-9]/)){ // Check if name contains a number
 //         return false;
 //     }
 //     if(email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){ // Check for email validity
 //         return false;
 //     }
-//     if(password1 !== password2){
+//     if(password !== password2){
 //         return false;
 //     }
 
@@ -26,15 +26,13 @@ const createJWTtoken = (id) => {
 
 const signup_post = (req, res) => {
   console.log("Request received");
-  const { name, email, password, password2 } = req.body;
-  console.log(name, email, password, password2);
-  const errors = [];
+  const { name, email, password } = req.body;
+  console.log(name, email, password);
   User.findOne({ email: email })
     .then(async (result) => {
       if (result) {
-        errors.push({ failed: "Email already exists" });
+        res.json({ failed: "Email already exists" });
         console.log(email + " already exists");
-        res.json(errors);
       } else {
         // Encrypt password before saving to DB
 
@@ -70,12 +68,10 @@ const signup_post = (req, res) => {
 
 const login_post = (req, res) => {
   const { email, password } = req.body;
-  const errors = [];
   User.findOne({ email }).then(async (user) => {
     if (!user) {
       console.log(email + " is not a registered email");
-      errors.push({ failed: "Incorrect email or password" });
-      res.json(errors);
+      res.json({ failed: "Incorrect email or password" });
     }
     const match = await bcrypt.compare(password, user.password);
     if (match) {
@@ -84,10 +80,9 @@ const login_post = (req, res) => {
         httpOnly: true,
         maxAge: expirationDuration * 1000,
       });
-      res.json({ loginSuccess: user });
+      res.json({ success: user });
     } else {
-      errors.push({ failed: "Incorrect email or password" });
-      res.json(errors);
+      res.json({ failed: "Incorrect email or password" });
     }
   });
 };

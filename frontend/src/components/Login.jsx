@@ -15,10 +15,10 @@ import LockIcon from "@mui/icons-material/Lock";
 
 const Login = () => {
   const [values, setValues] = useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
+    // amount: "",
+    // password: "",
+    // weight: "",
+    // weightRange: "",
     showPassword: false,
   });
 
@@ -55,6 +55,7 @@ const Login = () => {
             label="Email"
             variant="standard"
             sx={{ width: "30%" }}
+            onChange={(e) => handleChange(e)}
           />
         </Box>
         <Box>
@@ -67,7 +68,7 @@ const Login = () => {
               id="standard-adornment-password"
               type={values.showPassword ? "text" : "password"}
               value={values.password}
-              onChange={handleChange("password")}
+              onChange={(e) => handleChange(e)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton

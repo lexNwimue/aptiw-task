@@ -1,7 +1,5 @@
 import "./App.css";
-// import Navbar from "./components/Navbar";
-// import Form from "./components/Form";
-// import Dashboard from "./components/Dashboard";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
