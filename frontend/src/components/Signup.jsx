@@ -6,8 +6,6 @@ import AlternateEmail from "@mui/icons-material/AlternateEmail";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
@@ -23,7 +21,7 @@ const Signup = () => {
   // const [password1, setPassword1] = useState("");
   // const [password2, setPassword2] = useState("");
   const [nameErr, setNameErr] = useState("");
-  const [emailErr, setEmailErr] = useState("");
+
   const [passwordErr, setPasswordErr] = useState("");
 
   const [values, setValues] = useState({
@@ -34,14 +32,11 @@ const Signup = () => {
     showPassword: false,
   });
 
-  // const handleChange = (prop) => (event) => {
-  const handleChange = (prop) => (event) => {
-    console.log(event);
-    setValues({ ...values, [event.target.name]: event.target.value });
-    console.log(values.name, values.email, values.password1, values.password2);
-  };
-
   const handleRegister = async () => {
+    console.log("nameErr: ", nameErr);
+    console.log("passwordErr: ", passwordErr);
+    setNameErr("");
+    setPasswordErr("");
     const validate = signupUtil(
       values.name,
       values.email,
@@ -51,7 +46,6 @@ const Signup = () => {
     // console.log(validate);
     if (!validate.success) {
       if (validate.nameErr) setNameErr(validate.nameErr);
-      if (validate.emailErr) setEmailErr(validate.emailErr);
       if (validate.passwordErr) setPasswordErr(validate.passwordErr);
     }
 
@@ -92,111 +86,121 @@ const Signup = () => {
   return (
     <>
       <Navbar />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
-        <Box>
-          <AccountCircle sx={{ color: "action.active", mr: 1, mt: 3 }} />
-          <TextField
-            label="Full Name"
-            value={values.name}
-            required
-            variant="standard"
-            sx={{ width: "30%" }}
-            name="name"
-            onChange={(e) =>
-              setValues({ ...values, [e.target.name]: e.target.value })
-            }
-          />
-        </Box>
-        <Box>
-          <AlternateEmail sx={{ color: "action.active", mr: 1, mt: 3 }} />
-          <TextField
-            label="Email"
-            required
-            variant="standard"
-            value={values.email}
-            onChange={(e) =>
-              setValues({ ...values, [e.target.name]: e.target.value })
-            }
-            name="email"
-            sx={{ width: "30%" }}
-          />
-        </Box>
-        <Box>
-          <LockIcon sx={{ color: "action.active", mt: 4 }} />
-          <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-password1">
-              Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password1"
+      <form onSubmit={(e) => e.preventDefault()} method="POST">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <Box>
+            <AccountCircle sx={{ color: "action.active", mr: 1, mt: 3 }} />
+            <TextField
+              label="Full Name"
+              value={values.name}
               required
-              type={values.showPassword ? "text" : "password"}
-              value={values.password1}
-              name="password1"
+              variant="standard"
+              sx={{ width: "30%" }}
+              name="name"
               onChange={(e) =>
                 setValues({ ...values, [e.target.name]: e.target.value })
               }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
+              {...(nameErr && { error: true, helperText: nameErr })}
             />
-          </FormControl>
-        </Box>
-        <Box>
-          <LockIcon sx={{ color: "action.active", mt: 4 }} />
-          <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-password2">
-              Confirm Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password2"
+          </Box>
+          <Box>
+            <AlternateEmail sx={{ color: "action.active", mr: 1, mt: 3 }} />
+            <TextField
+              label="Email"
+              type={"email"}
               required
-              type={values.showPassword ? "text" : "password"}
-              value={values.password2}
-              name="password2"
+              variant="standard"
+              value={values.email}
               onChange={(e) =>
                 setValues({ ...values, [e.target.name]: e.target.value })
               }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
+              name="email"
+              sx={{ width: "30%" }}
             />
-          </FormControl>
+          </Box>
+          <Box>
+            <LockIcon sx={{ color: "action.active", mt: 2 }} />
+            <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
+              {/* <InputLabel htmlFor="standard-adornment-password1">
+                Password
+              </InputLabel> */}
+              <TextField
+                id="standard-adornment-password1"
+                label="Password"
+                variant="standard"
+                required
+                type="password"
+                value={values.password1}
+                name="password1"
+                {...(passwordErr && { error: true, helperText: passwordErr })}
+                onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <LockIcon sx={{ color: "action.active", mt: 2 }} />
+            <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
+              {/* <InputLabel htmlFor="standard-adornment-password2">
+                Confirm Password
+              </InputLabel> */}
+              <TextField
+                variant="standard"
+                id="standard-adornment-password2"
+                required
+                label="Confirm Password"
+                type="password"
+                value={values.password2}
+                name="password2"
+                {...(passwordErr && { error: true, helperText: passwordErr })}
+                onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ width: "100px" }}
+              onClick={handleRegister}
+            >
+              Register
+            </Button>
+          </Box>
         </Box>
-        <Box>
-          <Button
-            variant="contained"
-            sx={{ width: "100px" }}
-            onClick={handleRegister}
-          >
-            Register
-          </Button>
-        </Box>
-        <span>I am a span</span>
-      </Box>
+      </form>
     </>
   );
 };

@@ -7,7 +7,6 @@ const SearchForm = () => {
   const [text, setText] = useState("");
   const handleInput = (e) => {
     setText(e.target.value);
-    console.log(text);
   };
   return (
     <>
@@ -23,6 +22,7 @@ const SearchForm = () => {
           label="Enter a word . . ."
           type="search"
           variant="standard"
+          value={text}
           sx={{ width: "400px" }}
           onChange={(e) => handleInput(e)}
         />

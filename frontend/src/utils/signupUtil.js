@@ -1,25 +1,17 @@
 const signupUtil = (name, email, password1, password2) => {
-  console.log(
-    "Inside signupUtil function: ",
-    name,
-    email,
-    password1,
-    password2
-  );
+  console.log("Details", name, email, password1.length, password2.length);
+
   if (name.match(/[0-9]/)) {
     //Check if name contains a number
     return { nameErr: "Name cannot contain numbers..." };
-  }
-  if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-    // Check for email validity
-    return { emailErr: "Invalid Email..." };
-  }
-  if (password1 !== password2) {
-    return { passwordErr: "Name cannot contain numbers..." };
-  }
-  if (password1.length < 6) {
+  } else if (password1 !== password2) {
+    return { passwordErr: "Passwords do not match" };
+  } else if (password1.length < 6 || password2.length < 6) {
+    console.log(password1.length, password2.length);
     return { passwordErr: "Password must be at least six characters..." };
   }
+
+  console.log("Validated");
 
   return { success: "Creating your account..." };
 };
