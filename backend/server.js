@@ -6,6 +6,7 @@ import { signup_post, login_post } from "./controller.mjs";
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cookieParser());
 
 // Connect to MongoDB

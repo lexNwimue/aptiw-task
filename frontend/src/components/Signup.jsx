@@ -6,81 +6,58 @@ import AlternateEmail from "@mui/icons-material/AlternateEmail";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import FormControl from "@mui/material/FormControl";
-import IconButton from "@mui/material/IconButton";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
-import InputAdornment from "@mui/material/InputAdornment";
 import LockIcon from "@mui/icons-material/Lock";
 
 // Utils import
-import signupUtil from "../utils/signupUtil";
+import { validate, sendRequest } from "../utils/signupUtil";
 
 const Signup = () => {
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password1, setPassword1] = useState("");
-  // const [password2, setPassword2] = useState("");
   const [nameErr, setNameErr] = useState("");
-
   const [passwordErr, setPasswordErr] = useState("");
-
+  const [emailErr, setEmailErr] = useState("");
   const [values, setValues] = useState({
     name: "",
     email: "",
     password1: "",
     password2: "",
-    showPassword: false,
   });
 
   const handleRegister = async () => {
-    console.log("nameErr: ", nameErr);
-    console.log("passwordErr: ", passwordErr);
+    // console.log("nameErr: ", nameErr);
+    // console.log("passwordErr: ", passwordErr);
     setNameErr("");
     setPasswordErr("");
-    const validate = signupUtil(
+    const validity = validate(
       values.name,
       values.email,
       values.password1,
       values.password2
     );
-    // console.log(validate);
-    if (!validate.success) {
-      if (validate.nameErr) setNameErr(validate.nameErr);
-      if (validate.passwordErr) setPasswordErr(validate.passwordErr);
+    console.log(validate);
+    if (!validity.success) {
+      if (validity.nameErr) setNameErr(validity.nameErr);
+      if (validity.passwordErr) setPasswordErr(validity.passwordErr);
     }
 
-    if (validate.success) {
-      const body = {
+    if (validity.success) {
+      const formData = {
         name: values.name,
         email: values.email,
         password: values.password1,
       };
-      const response = await fetch("/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-      const data = await response.json();
-      if (data.failed) {
-        // set errors here
+
+      const response = await sendRequest(formData, "/signup");
+      console.log(response);
+      if (response.success) {
+        // redirect to dashboard
       }
-      if (data.success) {
-        // Navigate to dashboard here
+      if (response.failed) {
+        setEmailErr(response.failed);
+      }
+      if (response.err) {
+        setEmailErr(response.err);
       }
     }
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
   };
 
   return (
@@ -123,16 +100,13 @@ const Signup = () => {
               }
               name="email"
               sx={{ width: "30%" }}
+              {...(emailErr && { error: true, helperText: emailErr })}
             />
           </Box>
           <Box>
-            <LockIcon sx={{ color: "action.active", mt: 2 }} />
+            <LockIcon sx={{ color: "action.active", mt: 4 }} />
             <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
-              {/* <InputLabel htmlFor="standard-adornment-password1">
-                Password
-              </InputLabel> */}
               <TextField
-                id="standard-adornment-password1"
                 label="Password"
                 variant="standard"
                 required
@@ -143,29 +117,14 @@ const Signup = () => {
                 onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
               />
             </FormControl>
           </Box>
           <Box>
-            <LockIcon sx={{ color: "action.active", mt: 2 }} />
+            <LockIcon sx={{ color: "action.active", mt: 4 }} />
             <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
-              {/* <InputLabel htmlFor="standard-adornment-password2">
-                Confirm Password
-              </InputLabel> */}
               <TextField
                 variant="standard"
-                id="standard-adornment-password2"
                 required
                 label="Confirm Password"
                 type="password"
@@ -174,17 +133,6 @@ const Signup = () => {
                 {...(passwordErr && { error: true, helperText: passwordErr })}
                 onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
                 }
               />
             </FormControl>

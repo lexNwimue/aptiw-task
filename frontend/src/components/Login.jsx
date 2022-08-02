@@ -5,86 +5,98 @@ import AlternateEmail from "@mui/icons-material/AlternateEmail";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Input from "@mui/material/Input";
-import IconButton from "@mui/material/IconButton";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
-import InputAdornment from "@mui/material/InputAdornment";
 import LockIcon from "@mui/icons-material/Lock";
 
+// Utils import
+import { sendRequest } from "../utils/signupUtil";
 const Login = () => {
+  // State definitions
   const [values, setValues] = useState({
-    showPassword: false,
+    email: "",
+    password: "",
   });
+  const [emailErr, setEmailErr] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
 
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
+  const formData = {
+    email: values.email,
+    password: values.password,
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleLogin = async () => {
+    setEmailErr("");
+    setPasswordErr("");
+    console.log(formData);
+    const response = await sendRequest(formData, "/login");
+    console.log(response);
+    if (response.success) {
+      // redirect to dashboard
+    }
+    if (response.failed) {
+      setEmailErr("Incorrect Details");
+      setPasswordErr("Incorrect Details");
+    }
+    if (response.err) {
+      setEmailErr("Some internal error occured...");
+    }
   };
 
   return (
     <>
       <Navbar />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
-        <Box>
-          <AlternateEmail sx={{ color: "action.active", mr: 1, mt: 3 }} />
-          <TextField
-            id="input-with-sx"
-            label="Email"
-            variant="standard"
-            sx={{ width: "30%" }}
-            onChange={(e) => handleChange(e)}
-          />
-        </Box>
-        <Box>
-          <LockIcon sx={{ color: "action.active", mt: 3 }} />
-          <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-password">
-              Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              onChange={(e) => handleChange(e)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
+      <form method="post" onSubmit={(e) => e.preventDefault()}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <Box>
+            <AlternateEmail sx={{ color: "action.active", mr: 1, mt: 3 }} />
+            <TextField
+              id="input-with-sx"
+              type={"email"}
+              required
+              name="email"
+              label="Email"
+              variant="standard"
+              sx={{ width: "30%" }}
+              onChange={(e) =>
+                setValues({ ...values, [e.target.name]: e.target.value })
               }
+              {...(emailErr && { error: true, helperText: passwordErr })}
             />
-          </FormControl>
+          </Box>
+          <Box>
+            <LockIcon sx={{ color: "action.active", mt: 4 }} />
+            <FormControl sx={{ m: 1, width: "30%" }} variant="standard">
+              <TextField
+                variant="standard"
+                label="Password"
+                name="password"
+                required
+                type={"password"}
+                value={values.password}
+                onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }
+                {...(passwordErr && { error: true, helperText: passwordErr })}
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              sx={{ width: "100px" }}
+              onClick={handleLogin}
+            >
+              Login
+            </Button>
+          </Box>
         </Box>
-        <Box>
-          <Button variant="contained" sx={{ width: "100px" }}>
-            Login
-          </Button>
-        </Box>
-      </Box>
+      </form>
     </>
   );
 };

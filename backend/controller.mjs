@@ -68,23 +68,27 @@ const signup_post = (req, res) => {
 
 const login_post = (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email }).then(async (user) => {
-    if (!user) {
-      console.log(email + " is not a registered email");
-      res.json({ failed: "Incorrect email or password" });
-    }
-    const match = await bcrypt.compare(password, user.password);
-    if (match) {
-      const token = createJWTtoken(user.email);
-      res.cookie("jwt", token, {
-        httpOnly: true,
-        maxAge: expirationDuration * 1000,
-      });
-      res.json({ success: user });
-    } else {
-      res.json({ failed: "Incorrect email or password" });
-    }
-  });
+  console.log("email: ", email, " password: ", password);
+  User.findOne({ email })
+    .then(async (user) => {
+      if (!user) {
+        console.log(email + " is not a registered email");
+        res.json({ failed: "Incorrect email or password" });
+        return;
+      }
+      const match = await bcrypt.compare(password, user.password);
+      if (match) {
+        const token = createJWTtoken(user.email);
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          maxAge: expirationDuration * 1000,
+        });
+        res.json({ success: user });
+      } else {
+        res.json({ failed: "Incorrect email or password" });
+      }
+    })
+    .catch((err) => res.json({ err: err }));
 };
 
 export { signup_post, login_post };

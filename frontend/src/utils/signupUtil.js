@@ -1,4 +1,4 @@
-const signupUtil = (name, email, password1, password2) => {
+const validate = (name, email, password1, password2) => {
   console.log("Details", name, email, password1.length, password2.length);
 
   if (name.match(/[0-9]/)) {
@@ -16,4 +16,16 @@ const signupUtil = (name, email, password1, password2) => {
   return { success: "Creating your account..." };
 };
 
-export default signupUtil;
+const sendRequest = async (formData, endpoint) => {
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+  const data = await response.json();
+  return data;
+};
+
+export { validate, sendRequest };
