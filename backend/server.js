@@ -1,7 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import { signup_post, login_post } from "./controller.mjs";
+import {
+  signup_post,
+  login_post,
+  verify_user,
+  oxfordAPI,
+} from "./controller.mjs";
 
 const app = express();
 
@@ -22,6 +27,8 @@ mongoose
 
 app.post("/signup", signup_post);
 app.post("/login", login_post);
+app.get("/dashboard", verify_user);
+app.post("/search", oxfordAPI);
 app.all("*", (req, res) => {
   res.json({ err: "Invalid URL" });
 });

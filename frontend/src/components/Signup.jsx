@@ -10,8 +10,10 @@ import LockIcon from "@mui/icons-material/Lock";
 
 // Utils import
 import { validate, sendRequest } from "../utils/signupUtil";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [nameErr, setNameErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
   const [emailErr, setEmailErr] = useState("");
@@ -23,17 +25,9 @@ const Signup = () => {
   });
 
   const handleRegister = async () => {
-    // console.log("nameErr: ", nameErr);
-    // console.log("passwordErr: ", passwordErr);
     setNameErr("");
     setPasswordErr("");
-    const validity = validate(
-      values.name,
-      values.email,
-      values.password1,
-      values.password2
-    );
-    console.log(validate);
+    const validity = validate(values.name, values.password1, values.password2);
     if (!validity.success) {
       if (validity.nameErr) setNameErr(validity.nameErr);
       if (validity.passwordErr) setPasswordErr(validity.passwordErr);
@@ -49,7 +43,7 @@ const Signup = () => {
       const response = await sendRequest(formData, "/signup");
       console.log(response);
       if (response.success) {
-        // redirect to dashboard
+        navigate("/dashboard");
       }
       if (response.failed) {
         setEmailErr(response.failed);

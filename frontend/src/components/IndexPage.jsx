@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 const IndexPage = () => {
   return (
     <>
-      <Navbar />;
+      <Navbar />
       <SearchForm />
     </>
   );

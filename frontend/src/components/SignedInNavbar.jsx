@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AccountCircleTwoToneIcon from "@mui/icons-material/AccountCircleTwoTone";
+import { Link } from "react-router-dom";
 
 const SignedInNavbar = () => {
   return (
@@ -24,9 +25,11 @@ const SignedInNavbar = () => {
             justifyContent: "space-around",
           }}
         >
-          <Typography variant="h4" sx={{}}>
-            Dictionary
-          </Typography>
+          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+            <Typography variant="h4" sx={{}}>
+              Dictionary
+            </Typography>
+          </Link>
           <Button
             sx={{
               pb: "0px",

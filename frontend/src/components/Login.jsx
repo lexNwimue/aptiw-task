@@ -9,7 +9,10 @@ import LockIcon from "@mui/icons-material/Lock";
 
 // Utils import
 import { sendRequest } from "../utils/signupUtil";
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const navigate = useNavigate();
   // State definitions
   const [values, setValues] = useState({
     email: "",
@@ -26,11 +29,12 @@ const Login = () => {
   const handleLogin = async () => {
     setEmailErr("");
     setPasswordErr("");
-    console.log(formData);
     const response = await sendRequest(formData, "/login");
     console.log(response);
     if (response.success) {
-      // redirect to dashboard
+      // <Navigate to={"/dashboard"} />;
+      navigate("/dashboard");
+      console.log("Navigating to dashboard");
     }
     if (response.failed) {
       setEmailErr("Incorrect Details");

@@ -1,19 +1,10 @@
 import { User } from "./model/User.mjs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
-// const validate = (name, email, password, password2) => {
-//     if(name.match(/[0-9]/)){ // Check if name contains a number
-//         return false;
-//     }
-//     if(email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){ // Check for email validity
-//         return false;
-//     }
-//     if(password !== password2){
-//         return false;
-//     }
-
-// }
+import http from "https";
+import dotenv from "dotenv";
+// import fetch from "node-fetch";
+dotenv.config();
 
 // Creating cookie data using jwt
 // This is made global so it can be accessible to both signup and login modules
@@ -84,6 +75,7 @@ const login_post = (req, res) => {
           maxAge: expirationDuration * 1000,
         });
         res.json({ success: user });
+        return;
       } else {
         res.json({ failed: "Incorrect email or password" });
       }
@@ -91,4 +83,67 @@ const login_post = (req, res) => {
     .catch((err) => res.json({ err: err }));
 };
 
-export { signup_post, login_post };
+const verify_user = (req, res) => {
+  const token = req.cookies.jwt;
+  console.log("Token Received: ", token);
+  if (token) {
+    jwt.verify(token, "my secret code goes here", (err, decodedToken) => {
+      if (err) {
+        console.log(err.message);
+        res.json({ failed: "Unauthorized access..." });
+      } else {
+        res.json({ success: "Authorized" });
+      }
+    });
+  } else {
+    res.json({ failed: "Unauthorized access..." });
+  }
+};
+
+const oxfordAPI = async (req, res) => {
+  const searchText = req.body.searchText;
+  let result = [];
+  let response = await fetch(
+    `https://api.dictionaryapi.dev/api/v2/entries/en/${searchText}`
+  );
+  if (response.ok) {
+    response = await response.json();
+    response = response[0].meanings;
+    // res.json(response);
+
+    for (
+      let j = 0;
+      j < response.length && j < response[j].definitions.length;
+      j++
+    ) {
+      result[j] = {};
+      // console.log(`Definition ${j + 1}`);
+      result[j].definitionNum = `Definition ${j + 1}: `;
+      // console.log(response[j].definitions[j].definition);
+      result[j].definition = response[j].definitions[j].definition;
+      // console.log(response[j].partOfSpeech);
+      result[j].partOfSpeech = response[j].partOfSpeech;
+      // console.log("Synonyms: ", response[j].definitions[j].synonyms);
+
+      // Check if synonyms array is undefined (on initial interation)
+      // if such, then define it as an array
+      if (typeof result[j].synonyms === "undefined") result[j].synonyms = [];
+
+      // If there exists a populated array of synonyms push it's value to the result array
+      if (response[j].definitions[j].synonyms.length > 0) {
+        result[j].synonyms.push(response[j].definitions[j].synonyms);
+      }
+
+      result[j].synonyms.push(response[j].definitions[j].synonyms);
+      console.log(result);
+      if (j === response.length - 1) {
+        res.json(result); // Only return response after last iteration
+        return;
+      }
+    }
+  } else {
+    res.json({ empty: "No results" });
+  }
+};
+
+export { signup_post, login_post, verify_user, oxfordAPI };
