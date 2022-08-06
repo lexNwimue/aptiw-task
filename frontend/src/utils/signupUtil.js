@@ -11,9 +11,9 @@ const validate = (name, password1, password2) => {
   return { success: "Creating your account..." };
 };
 
-const sendRequest = async (formData, endpoint) => {
+const sendRequest = async (formData, endpoint, method) => {
   const response = await fetch(endpoint, {
-    method: "POST",
+    method: method,
     headers: {
       "Content-Type": "application/json",
     },
@@ -23,4 +23,9 @@ const sendRequest = async (formData, endpoint) => {
   return data;
 };
 
-export { validate, sendRequest };
+const addToFavourites = async (text) => {
+  let response = await sendRequest({ text }, "/favourites", "POST");
+  return response;
+};
+
+export { validate, sendRequest, addToFavourites };

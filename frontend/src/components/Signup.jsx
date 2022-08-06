@@ -40,7 +40,7 @@ const Signup = () => {
         password: values.password1,
       };
 
-      const response = await sendRequest(formData, "/signup");
+      const response = await sendRequest(formData, "/signup", "POST");
       console.log(response);
       if (response.success) {
         navigate("/dashboard");

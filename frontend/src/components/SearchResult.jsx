@@ -12,14 +12,12 @@ const SearchResult = ({ searchResult }) => {
           justifyItems: "flex-start",
           textAlign: "left",
           width: "500px",
-          border: "1px solid red",
           p: 4,
         }}
       >
         {searchResult &&
           searchResult.map((result) => (
             <Box
-              key={result.definitionNum}
               sx={{
                 width: "80%",
                 mb: 4,
@@ -31,16 +29,16 @@ const SearchResult = ({ searchResult }) => {
               >
                 {result.definitionNum}
               </Typography>
-              <Typography key={result.definitionNum}>
+              <Typography key={result.definition}>
                 {result.definition}
               </Typography>
               <Typography
-                key={result.definitionNum}
+                key={result.partOfSpeech}
                 sx={{ fontStyle: "italic" }}
               >
                 {result.partOfSpeech}
               </Typography>
-              <Typography key={result.definitionNum}>
+              <Typography key={result.synonyms ? "key" : "keys"}>
                 Synonyms: {result.synonyms && result.synonyms.join("")}
               </Typography>
             </Box>

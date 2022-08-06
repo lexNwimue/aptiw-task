@@ -6,6 +6,7 @@ import Signup from "./components/Signup";
 import IndexPage from "./components/IndexPage";
 // import Dashboard from "./components/Dashboard";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import Favourites from "./components/Favourites";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route index path="/" element={<IndexPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/favourites" element={<Favourites />} />
           <Route path="/dashboard" element={<ProtectedRoutes />} />
         </Routes>
       </Router>

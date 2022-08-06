@@ -13,9 +13,13 @@ const ProtectedRoutes = () => {
     const sideEffect = async () => {
       const response = await verifyUser();
       console.log("Verify User Response: ", response);
-      const newState = !userStatus;
-      setUserStatus(newState);
-      console.log("New User Status", newState);
+      if (response.success) {
+        const newState = !userStatus;
+        setUserStatus(newState);
+        console.log("New User Status", newState);
+      } else {
+        return;
+      }
     };
     sideEffect();
     console.log("userStatus after useEffect", userStatus);

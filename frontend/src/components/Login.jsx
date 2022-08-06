@@ -29,7 +29,7 @@ const Login = () => {
   const handleLogin = async () => {
     setEmailErr("");
     setPasswordErr("");
-    const response = await sendRequest(formData, "/login");
+    const response = await sendRequest(formData, "/login", "POST");
     console.log(response);
     if (response.success) {
       // <Navigate to={"/dashboard"} />;

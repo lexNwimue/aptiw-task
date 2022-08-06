@@ -3,10 +3,12 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import SearchResult from "./SearchResult";
+import { addToFavourites } from "../utils/signupUtil";
 
 const SearchForm = () => {
   const [text, setText] = useState("");
   const [searchResult, setSearchResult] = useState("");
+  const [newFavourite, setNewFavourite] = useState("");
   const [err, setErr] = useState("");
   const handleInput = (e) => {
     setText(e.target.value);
@@ -38,6 +40,12 @@ const SearchForm = () => {
       console.log("Error...");
       setErr("Some error occured");
     }
+  };
+
+  const handleAddToFavourites = async () => {
+    let response = await addToFavourites(text);
+
+    console.log(response);
   };
 
   return (
@@ -96,7 +104,7 @@ const SearchForm = () => {
           {searchResult && (
             <Button
               variant="filled"
-              onClick={handleSearch}
+              onClick={handleAddToFavourites}
               sx={{
                 height: "30px",
                 textTransform: "none",

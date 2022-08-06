@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import http from "https";
 import dotenv from "dotenv";
-// import fetch from "node-fetch";
+import fetch from "node-fetch";
 dotenv.config();
 
 // Creating cookie data using jwt
@@ -85,18 +85,46 @@ const login_post = (req, res) => {
 
 const verify_user = (req, res) => {
   const token = req.cookies.jwt;
-  console.log("Token Received: ", token);
   if (token) {
+    let decoded = {};
     jwt.verify(token, "my secret code goes here", (err, decodedToken) => {
       if (err) {
-        console.log(err.message);
+        // console.log(err.message);
         res.json({ failed: "Unauthorized access..." });
-      } else {
+        return;
+      } else if (decodedToken) {
         res.json({ success: "Authorized" });
+        console.log("Got here??");
+        decoded = decodedToken;
+        return decoded;
       }
     });
+
+    return decoded;
   } else {
     res.json({ failed: "Unauthorized access..." });
+    console.log("Some error");
+    return;
+  }
+};
+
+const verifyBeforeAddingFavourites = (req, res) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    let decoded = {};
+    jwt.verify(token, "my secret code goes here", (err, decodedToken) => {
+      if (err) {
+        // console.log(err.message);
+        return { failed: "Unauthorized Access" };
+      } else if (decodedToken) {
+        decoded = decodedToken;
+        // return decoded;
+      }
+    });
+
+    return decoded;
+  } else {
+    return { err: "Some error occured" };
   }
 };
 
@@ -118,7 +146,7 @@ const oxfordAPI = async (req, res) => {
     ) {
       result[j] = {};
       // console.log(`Definition ${j + 1}`);
-      result[j].definitionNum = `Definition ${j + 1}: `;
+      result[j].definitionNum = `Definition ${1 + j}: `;
       // console.log(response[j].definitions[j].definition);
       result[j].definition = response[j].definitions[j].definition;
       // console.log(response[j].partOfSpeech);
@@ -146,4 +174,32 @@ const oxfordAPI = async (req, res) => {
   }
 };
 
-export { signup_post, login_post, verify_user, oxfordAPI };
+const add_to_favourites = async (req, res) => {
+  const word = req.body.text;
+  const verified = verifyBeforeAddingFavourites(req, res);
+  if (verified.failed || verified.err) {
+    // res.json(verified);
+    return;
+  }
+  const userID = verified.id;
+
+  // Ensure the to-be-added word isn't already in the favourites array
+  // for that particular user before adding.
+  const userFavourites = await User.find(
+    { email: userID },
+    { favourites: 1 } //Returns only the favourites field and not the entire user document
+  );
+  console.log(userFavourites[0].favourites);
+  if (userFavourites[0].favourites.indexOf(word) === -1) {
+    await User.updateOne({ email: userID }, { $push: { favourites: word } });
+    console.log(word, "added");
+    res.json({ success: "Added to Favourites successfully" });
+    return;
+  } else {
+    console.log("Word already added to Favourites");
+    res.json({ failed: "Word already added to Favourites" });
+    return;
+  }
+};
+
+export { signup_post, login_post, verify_user, oxfordAPI, add_to_favourites };
