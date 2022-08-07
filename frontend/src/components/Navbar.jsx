@@ -29,17 +29,19 @@ const Navbar = () => {
               Dictionary
             </Typography>
           </Link>
-          <Button
-            sx={{
-              pb: "0px",
-              pt: "8px",
-              ml: 3,
-              textDecoration: "underline",
-              textTransform: "none",
-            }}
-          >
-            Favourites
-          </Button>
+          <Link to={"/favourites"}>
+            <Button
+              sx={{
+                pb: "0px",
+                pt: "8px",
+                ml: 3,
+                textDecoration: "underline",
+                textTransform: "none",
+              }}
+            >
+              Favourites
+            </Button>
+          </Link>
         </Box>
         <div sx={{}}>
           <Link to="/login" style={{ textDecoration: "none" }}>

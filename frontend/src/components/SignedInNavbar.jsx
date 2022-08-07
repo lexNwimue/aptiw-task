@@ -30,16 +30,19 @@ const SignedInNavbar = () => {
               Dictionary
             </Typography>
           </Link>
-          <Button
-            sx={{
-              pb: "0px",
-              ml: 3,
-              textDecoration: "underline",
-              textTransform: "none",
-            }}
-          >
-            Favourites
-          </Button>
+          <Link to={"/favourites"}>
+            <Button
+              sx={{
+                pb: "0px",
+                mt: "8px",
+                ml: 3,
+                textDecoration: "underline",
+                textTransform: "none",
+              }}
+            >
+              Favourites
+            </Button>
+          </Link>
         </Box>
         <Box sx={{ display: "flex", cursor: "pointer" }}>
           <AccountCircleTwoToneIcon fontSize="large" />

@@ -178,7 +178,7 @@ const add_to_favourites = async (req, res) => {
   const word = req.body.text;
   const verified = verifyBeforeAddingFavourites(req, res);
   if (verified.failed || verified.err) {
-    // res.json(verified);
+    res.json(verified);
     return;
   }
   const userID = verified.id;

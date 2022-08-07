@@ -4,12 +4,13 @@ import Box from "@mui/material/Box";
 import { useState } from "react";
 import SearchResult from "./SearchResult";
 import { addToFavourites } from "../utils/signupUtil";
+import Notification from "../helper/Notification";
 
 const SearchForm = () => {
   const [text, setText] = useState("");
-  const [searchResult, setSearchResult] = useState("");
-  const [newFavourite, setNewFavourite] = useState("");
-  const [err, setErr] = useState("");
+  const [searchResult, setSearchResult] = useState(""); /// For Alert component
+  const [severity, setSeverity] = useState("");
+  const [err, setErr] = useState(""); // For error reporting
   const handleInput = (e) => {
     setText(e.target.value);
   };
@@ -43,9 +44,29 @@ const SearchForm = () => {
   };
 
   const handleAddToFavourites = async () => {
+    setSeverity("");
     let response = await addToFavourites(text);
+    if (response.failed) {
+      if (response.failed.includes("already")) {
+        setSeverity("info");
+        console.log(severity);
+        return;
+      }
+      if (
+        response.failed.includes(
+          "Unauthorized" || response.failed.includes("err")
+        )
+      ) {
+        setSeverity("error");
+        console.log(severity);
+        return;
+      }
+    }
 
-    console.log(response);
+    if (response.success) {
+      setSeverity("success");
+      console.log(severity);
+    }
   };
 
   return (
@@ -94,10 +115,12 @@ const SearchForm = () => {
             </Button>
           </Box>
         </form>
+        <Box sx={{ alignSelf: "flex-start", ml: 10 }}>
+          {severity && <Notification severity={severity} />}
+        </Box>
         <Box
           sx={{
             alignSelf: "flex-start",
-            mt: 4,
             ml: 3,
           }}
         >
