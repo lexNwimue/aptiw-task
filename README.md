@@ -1,5 +1,5 @@
 
-<div align="center"> <div>##aptiw-task</div>
+<div align="center"> <div># aptiw-task</div>
  A basic dictionary web app to look for and add to your favourite words. Solution for a challenge from  <a href="https://aptiw.com" target="_blank">aptiw full stack intermediate coding exercise</a>.
  </div>
 
