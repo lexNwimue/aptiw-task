@@ -1,7 +1,7 @@
-# lex-auth-site
-A basic authentication website where users can signup, login, view, and edit their profile
+# aptiw-task
+A basic dictionary web app to look for and add to your favourite words
 
-<h1 align="center">auth-site</h1>
+<h1 align="center">aptiw-task</h1>
 
 <div align="center">
    Solution for a challenge from  <a href="https://aptiw.com" target="_blank">aptiw full stack intermediate coding exercise</a>.
