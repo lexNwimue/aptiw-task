@@ -10,9 +10,6 @@
 - [Overview](#overview)
 - [Built With](#built-with)
 - [Features](#features)
-- [How to use](#how-to-use)
-- [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
 
 <!-- OVERVIEW -->
 
@@ -29,6 +26,7 @@ I expected this app to be an easy breeze through, because I already pictured the
 - [NodeJS](https://nodejs.org/)
 - [Express](https://expressjs.com/)
 - [MongoDB](https://mongodb.com/)
+- [Free Dictionary API](https://dictionaryapi.dev/)
 - [Magterial UI](https://mui.com/)
 
 ## Features
