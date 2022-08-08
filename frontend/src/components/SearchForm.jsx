@@ -10,6 +10,7 @@ const SearchForm = () => {
   const [text, setText] = useState("");
   const [searchResult, setSearchResult] = useState(""); /// For Alert component
   const [severity, setSeverity] = useState("");
+  let searchLimit = 0;
   const [err, setErr] = useState(""); // For error reporting
   const handleInput = (e) => {
     setText(e.target.value);
@@ -20,6 +21,17 @@ const SearchForm = () => {
     e.preventDefault();
     setSearchResult("");
     setErr("");
+    ++searchLimit;
+    console.log(searchLimit);
+    if (searchLimit === 2) {
+      document.getElementById("searchField").disabled = true;
+      document.getElementById("goBtn").disabled = true;
+      setTimeout(() => {
+        document.getElementById("searchField").disabled = false;
+        document.getElementById("goBtn").disabled = false;
+        searchLimit = 0;
+      }, 120000);
+    }
 
     try {
       let response = await fetch("/search", {
@@ -94,12 +106,14 @@ const SearchForm = () => {
               variant="standard"
               value={text}
               sx={{ width: "400px" }}
+              id={"searchField"}
               onChange={(e) => handleInput(e)}
               {...(err && { error: true, helperText: err })}
             />
             <Button
               variant="filled"
               onClick={handleSearch}
+              id={"goBtn"}
               sx={{
                 width: "100px",
                 height: "30px",
