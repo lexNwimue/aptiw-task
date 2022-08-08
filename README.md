@@ -18,8 +18,6 @@
 
 ## Overview
 
-![register](https://user-images.githubusercontent.com/30748446/166144744-c5ae0079-2d09-418f-b0a2-07b9ed9d2353.PNG)
-
 I expected this app to be an easy breeze through, because I already pictured the entire project structure in my head. I couldn't be any more wrong. It started gracefully until I started running into nasty bugs, especially since this was my first time using Material UI extensively, which I preferred over the usual Boostrap just for the fun of the challenge. I spent days debugging. At some point, I began to think JavaScript was self-aware. Because I'd close my laptop, having written a perfectly working code. Only to wake up to bugs in the morning. It was so annoying but I learned alot on the task. My ability to work under frustration was really tested.
 
 
