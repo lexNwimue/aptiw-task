@@ -1,5 +1,7 @@
 # aptiw-task
+<div align="center"> 
 A basic dictionary web app to look for and add to your favourite words. Solution for a challenge from  <a href="https://aptiw.com" target="_blank">aptiw full stack intermediate coding exercise</a>.
+ </div>
 
 <!-- TABLE OF CONTENTS -->
 
