@@ -15,21 +15,21 @@ import { useNavigate } from "react-router-dom";
 const Favourites = () => {
   const navigate = useNavigate();
   const [favourites, setFavourites] = useState([]);
-  const [authorized, setAuthorized] = useState(false);
+  // const [authorized, setAuthorized] = useState(false);
   useEffect(() => {
     const getFavourites = async () => {
       let response = await viewFavourites();
       console.log(response);
       if (response.failed || response.unauthorized) {
-        setAuthorized(false);
+        // setAuthorized(false);
         navigate("/login");
         return;
       }
       setFavourites(response);
-      setAuthorized(true);
+      // setAuthorized(true);
     };
     getFavourites();
-  }, [navigate, authorized]);
+  }, [navigate]);
 
   const handleDelete = async (e) => {
     const word = e.currentTarget.id;

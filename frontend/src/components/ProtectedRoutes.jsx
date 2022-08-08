@@ -1,23 +1,21 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { verifyUser } from "../utils/auth";
-import { useState } from "react";
+import { useRef } from "react";
 import { useEffect } from "react";
-import Dashboard from "./Dashboard";
 // import Login from "./Login";
 
 const ProtectedRoutes = () => {
-  const [userStatus, setUserStatus] = useState(false);
+  let userStatus = useRef(false);
   console.log("userStatus before useEffect", userStatus);
 
   useEffect(() => {
     const sideEffect = async () => {
       const response = await verifyUser();
       console.log("Verify User Response: ", response);
-      if (response.success) {
-        setUserStatus(true);
-        // setUserStatus(newState);
-        console.log("New User Status", userStatus);
+      if (response) {
+        userStatus.current = response;
       } else {
+        userStatus.current = false;
         return;
       }
     };
@@ -25,7 +23,7 @@ const ProtectedRoutes = () => {
     console.log("userStatus after useEffect", userStatus);
   }, [userStatus]);
 
-  return userStatus ? <Dashboard /> : <Navigate to="/login" />;
+  return userStatus ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoutes;

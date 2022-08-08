@@ -18,6 +18,7 @@ const SearchResult = ({ searchResult }) => {
         {searchResult &&
           searchResult.map((result) => (
             <Box
+              key={result.definition}
               sx={{
                 width: "80%",
                 mb: 4,

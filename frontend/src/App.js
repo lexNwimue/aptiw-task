@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import IndexPage from "./components/IndexPage";
-// import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Dashboard";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Favourites from "./components/Favourites";
 
@@ -17,7 +17,9 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/favourites" element={<Favourites />} />
-          <Route path="/dashboard" element={<ProtectedRoutes />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
         </Routes>
       </Router>
     </div>
