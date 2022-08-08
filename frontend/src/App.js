@@ -1,12 +1,18 @@
 import "./App.css";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import IndexPage from "./components/IndexPage";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Favourites from "./components/Favourites";
+import FourOFour from "./components/FourOFour";
 
 const App = () => {
   return (
@@ -20,6 +26,7 @@ const App = () => {
           <Route element={<ProtectedRoutes />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
+          <Route path="/404" element={<FourOFour />} />
         </Routes>
       </Router>
     </div>
