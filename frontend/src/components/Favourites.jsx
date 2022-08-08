@@ -10,16 +10,26 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import { viewFavourites, deleteWordFromFav } from "../utils/signupUtil";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Favourites = () => {
+  const navigate = useNavigate();
   const [favourites, setFavourites] = useState([]);
+  const [authorized, setAuthorized] = useState(false);
   useEffect(() => {
     const getFavourites = async () => {
-      let favourites = await viewFavourites();
-      setFavourites(favourites);
+      let response = await viewFavourites();
+      console.log(response);
+      if (response.failed || response.unauthorized) {
+        setAuthorized(false);
+        navigate("/login");
+        return;
+      }
+      setFavourites(response);
+      setAuthorized(true);
     };
     getFavourites();
-  }, []);
+  }, [navigate, authorized]);
 
   const handleDelete = async (e) => {
     const word = e.currentTarget.id;

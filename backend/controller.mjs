@@ -83,8 +83,8 @@ const verify_user = (req, res) => {
     let decoded = {};
     jwt.verify(token, "my secret code goes here", (err, decodedToken) => {
       if (err) {
-        res.json({ failed: "Unauthorized access..." });
-        return;
+        res.json({ failed: "Some error occured..." });
+        return { failed: "Some error occured..." };
       } else if (decodedToken) {
         res.json({ success: "Authorized" });
         decoded = decodedToken;
@@ -95,7 +95,7 @@ const verify_user = (req, res) => {
     return decoded;
   } else {
     res.json({ failed: "Unauthorized access..." });
-    return;
+    return { failed: "Unauthorized access..." };
   }
 };
 
@@ -114,7 +114,7 @@ const verifyUserIdentity = (req, res) => {
 
     return decoded;
   } else {
-    return { err: "Some error occured" };
+    return { unauthorized: "You are not authorized to view this resource" };
   }
 };
 
@@ -184,9 +184,9 @@ const add_to_favourites = async (req, res) => {
   }
 };
 
-const getFavourites = async (req, res) => {
+const viewFavourites = async (req, res) => {
   const verified = verifyUserIdentity(req, res);
-  if (verified.failed || verified.err) {
+  if (verified.failed || verified.unauthorized) {
     res.json(verified);
     return;
   }
@@ -234,7 +234,7 @@ export {
   verify_user,
   oxfordAPI,
   add_to_favourites,
-  getFavourites,
+  viewFavourites,
   deleteFavourite,
   logout,
 };

@@ -31,6 +31,7 @@ const addToFavourites = async (text) => {
 const viewFavourites = async () => {
   let response = await fetch("/favourites");
   response = await response.json();
+  // if(response.failed)
   return response;
 };
 

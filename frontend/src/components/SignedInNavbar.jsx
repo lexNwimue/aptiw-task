@@ -2,13 +2,16 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AccountCircleTwoToneIcon from "@mui/icons-material/AccountCircleTwoTone";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../utils/signupUtil";
 
 const SignedInNavbar = () => {
+  const navigate = useNavigate();
   const handleLogout = async () => {
-    logout();
+    await logout();
+    navigate("/login");
   };
+
   return (
     <>
       <Box

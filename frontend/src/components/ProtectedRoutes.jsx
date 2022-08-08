@@ -14,16 +14,16 @@ const ProtectedRoutes = () => {
       const response = await verifyUser();
       console.log("Verify User Response: ", response);
       if (response.success) {
-        const newState = !userStatus;
-        setUserStatus(newState);
-        console.log("New User Status", newState);
+        setUserStatus(true);
+        // setUserStatus(newState);
+        console.log("New User Status", userStatus);
       } else {
         return;
       }
     };
     sideEffect();
     console.log("userStatus after useEffect", userStatus);
-  });
+  }, [userStatus]);
 
   return userStatus ? <Dashboard /> : <Navigate to="/login" />;
 };
