@@ -7,6 +7,9 @@ import {
   verify_user,
   oxfordAPI,
   add_to_favourites,
+  getFavourites,
+  deleteFavourite,
+  logout,
 } from "./controller.mjs";
 
 const app = express();
@@ -31,6 +34,9 @@ app.post("/login", login_post);
 app.get("/dashboard", verify_user);
 app.post("/search", oxfordAPI);
 app.post("/favourites", add_to_favourites);
+app.get("/favourites", getFavourites);
+app.delete("/favourites", deleteFavourite);
+app.get("/logout", logout);
 app.all("*", (req, res) => {
   res.json({ err: "Invalid URL" });
 });

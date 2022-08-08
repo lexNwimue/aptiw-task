@@ -28,4 +28,28 @@ const addToFavourites = async (text) => {
   return response;
 };
 
-export { validate, sendRequest, addToFavourites };
+const viewFavourites = async () => {
+  let response = await fetch("/favourites");
+  response = await response.json();
+  return response;
+};
+
+const deleteWordFromFav = async (word) => {
+  let response = await sendRequest({ word }, "/favourites", "DELETE");
+  return response;
+};
+
+const logout = async () => {
+  let response = await fetch("/logout");
+  response = await response.json();
+  console.log(response);
+};
+
+export {
+  validate,
+  sendRequest,
+  addToFavourites,
+  viewFavourites,
+  deleteWordFromFav,
+  logout,
+};

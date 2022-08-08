@@ -3,8 +3,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AccountCircleTwoToneIcon from "@mui/icons-material/AccountCircleTwoTone";
 import { Link } from "react-router-dom";
+import { logout } from "../utils/signupUtil";
 
 const SignedInNavbar = () => {
+  const handleLogout = async () => {
+    logout();
+  };
   return (
     <>
       <Box
@@ -44,7 +48,7 @@ const SignedInNavbar = () => {
             </Button>
           </Link>
         </Box>
-        <Box sx={{ display: "flex", cursor: "pointer" }}>
+        <Box sx={{ display: "flex", cursor: "pointer" }} onClick={handleLogout}>
           <AccountCircleTwoToneIcon fontSize="large" />
           <Typography variant="subtitle1" sx={{ pt: "5px", ml: 1 }}>
             John Doe
