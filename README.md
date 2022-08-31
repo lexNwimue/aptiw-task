@@ -1,5 +1,6 @@
 
 <div align="center"> <h1>aptiw-task</h1>
+Link: <a href="expectoo-task.herokuapp.com" target="_blank">expectoo-task.herokuapp.com</a>
  A basic dictionary web app to look for and add to your favourite words. Solution for a challenge from  <a href="https://aptiw.com" target="_blank">aptiw full stack intermediate coding exercise</a>.
  </div>
 
